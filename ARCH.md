@@ -6,17 +6,26 @@ This document describes the internal architecture of claudash — a compiled Rus
 
 claudash is a single-process, synchronous CLI tool. Claude Code invokes it on every prompt render, piping session state as JSON on stdin. claudash parses this data, enriches it with cached API responses, formats everything into a single ANSI-escaped line, and prints it to stdout.
 
-```
-Claude Code                  claudash                       APIs
-┌──────────┐  stdin JSON  ┌────────────┐  HTTP (cached)  ┌──────────────┐
-│  session  │────────────▶│  parse +   │────────────────▶│  Anthropic   │
-│  state    │             │  enrich +  │◀────────────────│  OAuth API   │
-└──────────┘  stdout line │  format    │                 ├──────────────┤
-       ◀──────────────────│            │────────────────▶│  Claude      │
-     ANSI status line     └────────────┘                 │  Status API  │
-                               │                         └──────────────┘
-                               ▼
-                          /tmp cache files
+```mermaid
+sequenceDiagram
+    participant CC as Claude Code
+    participant CL as claudash
+    participant Cache as /tmp cache
+    participant OA as Anthropic OAuth API
+    participant SA as Claude Status API
+
+    CC->>CL: stdin JSON (session state)
+    CL->>Cache: read (profile, usage, status)
+    alt cache miss or expired
+        CL->>OA: GET /api/oauth/profile (Bearer)
+        OA-->>CL: email, org, plan
+        CL->>OA: GET /api/oauth/usage (Bearer)
+        OA-->>CL: quota data
+        CL->>SA: GET /api/v2/status.json
+        SA-->>CL: service health
+        CL->>Cache: write (with TTL)
+    end
+    CL-->>CC: stdout ANSI status line
 ```
 
 Design goals:
@@ -77,18 +86,13 @@ All fields are optional — claudash gracefully skips segments when data is miss
 
 ### 2. Credential resolution
 
-```
-┌─────────────────────────┐
-│ macOS Keychain           │◀── Primary (same store Claude Code uses)
-│ service: "Claude Code-   │    Command: /usr/bin/security find-generic-password
-│   credentials[-{hash}]" │
-└───────────┬─────────────┘
-            │ not found
-            ▼
-┌─────────────────────────┐
-│ ~/.claude/               │◀── Fallback
-│   .credentials.json      │    (or $CLAUDE_CONFIG_DIR/.credentials.json)
-└──────────────────────────┘
+```mermaid
+flowchart TD
+    A([resolve credentials]) --> B["macOS Keychain<br/>service: Claude Code-credentials[-hash]<br/>/usr/bin/security find-generic-password"]
+    B -->|found| T([OAuth token])
+    B -->|not found| C["~/.claude/.credentials.json<br/>or $CLAUDE_CONFIG_DIR/.credentials.json"]
+    C -->|found| T
+    C -->|not found| S([no credentials — authenticated segments skipped])
 ```
 
 The credential JSON contains:
