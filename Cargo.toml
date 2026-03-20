@@ -1,0 +1,17 @@
+[package]
+name = "claudash"
+version = "0.0.0"
+edition = "2021"
+description = "A rich Claude Code status line"
+license = "MIT"
+repository = "https://github.com/day0ops/claudash"
+authors = ["Kasun Talwatta"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = { version = "3", features = ["json"] }
+
+[profile.release]
+strip = true
+lto = true

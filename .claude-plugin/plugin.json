@@ -1,0 +1,12 @@
+{
+  "name": "claudash",
+  "description": "A rich Claude Code status line with context usage, costs, quotas, and service health",
+  "version": "0.1.0",
+  "author": {
+    "name": "Kasun Talwatta",
+    "url": "https://github.com/day0ops"
+  },
+  "homepage": "https://github.com/day0ops/claudash",
+  "repository": "https://github.com/day0ops/claudash",
+  "license": "MIT"
+}

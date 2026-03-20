@@ -1,0 +1,20 @@
+{
+  "name": "claudash",
+  "owner": {
+    "name": "Kasun Talwatta",
+    "email": "kasun.talwatta@gmail.com"
+  },
+  "metadata": {
+    "description": "A rich Claude Code status line with context usage, costs, quotas, and service health",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "claudash",
+      "source": "./",
+      "description": "A rich Claude Code status line with context usage, costs, quotas, and service health",
+      "category": "monitoring",
+      "tags": ["statusline", "status-line", "dashboard", "monitoring", "usage", "quotas"]
+    }
+  ]
+}
