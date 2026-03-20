@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "A rich Claude Code status line with context usage, costs, quotas, and service health",
-    "version": "0.1.0"
+    "version": "0.1.1"
   },
   "plugins": [
     {
