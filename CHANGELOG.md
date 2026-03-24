@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/day0ops/claudash/compare/v0.1.1...v0.1.2) (2026-03-24)
+
+
+### Features
+
+* adding am emoticon for overage and updated ARCH.md ([c70a26f](https://github.com/day0ops/claudash/commit/c70a26f3dfeadbd9ceaf0c7d9722a59960163aae))
+* adding am emoticon for overage and updated ARCH.md ([404e4fe](https://github.com/day0ops/claudash/commit/404e4fe2eaba57b88af0244260beb365f3522f3e))
+
 ## [0.1.1](https://github.com/day0ops/claudash/compare/v0.1.0...v0.1.1) (2026-03-20)
 
 
