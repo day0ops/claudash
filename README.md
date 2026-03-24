@@ -28,7 +28,7 @@ Displays model, subscription plan, email, session duration, context window usage
 | 5 | **Daily cost** | Accumulated spend across all sessions today | `$3.21 today` |
 | 6 | **Quota** | Grouped 5-hour and 7-day quota utilization | `[5h ███░░ 55% \| 7d █░░░░ 13%] quota` |
 | 7 | **Per-model sub-bars** | Individual 7-day quota bars per model tier | `██░░░ 35% sonnet · █░░░░ 12% opus` |
-| 8 | **Overage** | Pay-as-you-go extra usage (shown at ≥60% of monthly limit) | `███░░ $14/$20 overage` |
+| 8 | **Overage** | Pay-as-you-go extra usage (shown at ≥60% of monthly limit) | `███░░ 🔥 $14/$20 overage` |
 | 9 | **Service status** | Siren icon with severity bars when an incident is active | `🚨▄▂` |
 
 ## Installation
