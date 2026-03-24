@@ -15,8 +15,8 @@ fn light() -> bool {
 // ANSI codes that don't change with theme
 pub const RESET: &str = "\x1b[0m";
 
-const BAR_FILLED: char = '\u{2588}'; // █
-const BAR_EMPTY: char = '\u{2591}'; // ░
+const BAR_FILLED: char = '\u{2588}';
+const BAR_EMPTY: char = '\u{2591}';
 
 /// Non-breaking space to prevent terminal whitespace collapse.
 pub const NBSP: char = '\u{00A0}';
@@ -170,7 +170,7 @@ pub fn format_sub_bar(q: Option<&QuotaLimit>, label: &str) -> Option<String> {
     ))
 }
 
-/// Format pay-as-you-go extra usage as `◑ $used/$limit overage`.
+/// Format pay-as-you-go extra usage as `bar 🔥 $used/$limit overage`.
 /// Returns None when disabled, missing, or used credits are zero.
 pub fn format_extra_usage(extra: &ExtraUsage) -> Option<String> {
     let dim = dim();
@@ -196,8 +196,9 @@ pub fn format_extra_usage(extra: &ExtraUsage) -> Option<String> {
     // Red when ≥80% of limit is consumed
     let color = if pct >= 80.0 { red() } else { blue() };
     let usage_bar = bar(pct, 5, color);
+    let hot = orange();
     Some(format!(
-        "{usage_bar}{NBSP}{color}${used_dollars}/${limit_dollars}{RESET}{NBSP}{dim}overage{RESET}"
+        "{usage_bar}{NBSP}{hot}🔥{RESET}{NBSP}{color}${used_dollars}/${limit_dollars}{RESET}{NBSP}{dim}overage{RESET}"
     ))
 }
 
@@ -387,6 +388,7 @@ mod tests {
         let s = format_extra_usage(&extra).unwrap();
         assert!(s.contains("$14/$20"));
         assert!(s.contains("overage"));
+        assert!(s.contains("🔥"));
     }
 
     #[test]
@@ -399,6 +401,7 @@ mod tests {
         let s = format_extra_usage(&extra).unwrap();
         assert!(s.contains("$18/$20"));
         assert!(s.contains("overage"));
+        assert!(s.contains("🔥"));
         assert!(s.contains(red()));
     }
 
